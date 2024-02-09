@@ -1,0 +1,42 @@
+    {% comment %} <div class="col-md-12 col-lg-6"> {% endcomment %}
+    {% comment %} <div class="odr-box"> {% endcomment %}
+        {% comment %} <div class="title-left">  {% endcomment %}
+            {% comment %} <h3>Shopping cart</h3> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
+        
+        <div class="rounded p-2 bg-light">
+            <div class="media mb-2 border-bottom">
+                    {% for order_item in order.items.all %}
+                
+                <div class="media-body"> <a href="{% url 'product_detail' order_item.item.slug %}">{{ order_item.item.title }}</a>
+                    <div class="small text-muted">Price:{%if order_item.item.discount_price %} {{order_item.item.discount_price }} {% else %} {{order_item.item.price }}{% endif %}<span class="mx-2">|</span> Qty: {{order_item.quantity}} <span class="mx-2">|</span> Total Price: {{order_item.get_final_price }} </div>
+                </div>
+                    {% endfor %}
+            </div>
+                    <ul>
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-success">
+                            <h6 class="my-0">PROMO CODE</h6>
+                            <small>{{ order.coupon.code }}</small>
+                        </div>
+                        <span class="text-success">-$ {{ order.coupon.amount }}</span>
+                        </li>
+                        <li class=" list-group-item d-flex justify-content-between bg-light">
+                        <span>TOTAL</span> 
+                           <strong>${{order.get_total}}</strong>
+                        </li>
+                    </ul>
+                    {% if 'DISPLAY_COUPON_FORM' %}
+            <form class="form p-2" action="{% url 'add_coupon' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{ couponform.code }}
+                 {% comment %} <input type="text" class="form-control" placeholder="promo code "arial-label="recipent's username"> {% endcomment %}
+                 <div class="input-group-append">
+                    <button class="btn hvr-hover btn-md waves-effect m-0" type="submit">Redeem</button>
+                 </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>

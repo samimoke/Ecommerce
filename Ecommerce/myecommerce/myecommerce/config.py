@@ -1,0 +1,7 @@
+EMAIL_HOST_PASSWORD='gwczutsvofedcsiv'
+EMAIL_HOST_USER='samimokehirpa@gmail.com'
+SECRET_KEY ='django-insecure-1y5hq#^rngv#-ylk-!vf!b@$9x&egn+&2%^i%@ls#1v0&3p!pp'
+DB_NAME='Eshop'
+DB_USER='postgres'
+DB_PASSWORD='sami1234'
+DB_HOST='localhost'
