@@ -163,8 +163,11 @@
                 <div class="col-lg-12">
                     <h2>Shop Detail</h2>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% 'products' item.slug %}">Shop</a></li>
+                        {% for intem in items %}
+                        <li class="breadcrumb-item"><a href="{% url 'products' item.slug %}">Shop</a></li>
+                        {% endfor %}
                         <li class="breadcrumb-item active">Shop Detail </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -219,7 +222,8 @@
                 {% endif %}
             </div>
                     <div class="single-product-details">
-                        <h2>{{object.title}}</h2>
+                        <h2><a href="#">{{object.title}}</a></h2>
+                          {% comment %} <h2><a href="#">{{item.title }}</a></h2> {% endcomment %}
                         {% if object.discount_price %}
                         <h5> <del>$ {{ object.price }}</del> ${{ object.discount_price }}</h5>
                         {% else %}

@@ -65,15 +65,21 @@
                             <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">SHOP</a>
                             <ul class="dropdown-menu">
 								<li><a href="{% url 'products' %}">Sidebar Shop</a></li>
-                                 {% for item in items %} 
-								<li><a href="{% url 'product_detail' item.slug %}">Shop Detail</a></li>
-                                {% endfor %}
+                                 {% comment %} {% for item in items %}  {% endcomment %}
+                                  {% if items %}
+								<li><a href="{% url 'product_detail' items.0.slug %}">Shop Detail</a></li>
+                                {% comment %} {% endfor %} {% endcomment %}
+                                {% endif %}
                                 <li><a href="cart.html">Cart</a></li>
                                 <li><a href="{% url 'checkout' %}">Checkout</a></li>
                                 <li><a href=" {% url 'my_account' %}">My Account</a></li>
-                                {% for item in items %} 
+                                {% comment %} {% for item in items %} 
                                 <li><a href="{% url  'add_to_wishlist' item.slug %}">Wishlist</a></li>
-                                {% endfor %}
+                                {% endfor %} {% endcomment %}
+                                {% if items %}
+                                <li><a href="{% url 'add_to_wishlist' items.0.slug %}">Wishlist</a></li>
+                                {% endif %}
+
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
@@ -227,7 +233,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="why-text">
-                                                    <h4>{{item.title }}</h4>
+                                                    <h4><a href="#">{{item.title }}</a></h4>
                                              {% if item.discount_price %}
                                              <h5> <del> ${{ item.price }}</del></h5>
                                             <h5> ${{ item.discount_price }}</h5>
