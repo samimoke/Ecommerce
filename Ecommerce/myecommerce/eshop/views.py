@@ -489,53 +489,64 @@ class Payment(LoginRequiredMixin,View):
             messages.info(self.request,'You do not have billing address')
             return redirect('checkout')
    
-    def post(request,self,*args, **kwargs):
+# def payment(request,self,*args, **kwargs):
+def payment(request):
+    if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():   
-            order=Order.objects.get(user=self.request.user,ordered=False)
-            total_amount = order.get_final_price() * 100  
+            # order=Order.objects.get(user=self.request.user,ordered=False)
+            # total_amount = order.get_final_price() * 100  
         
-            order_id = order.id
-            currency= form.cleaned_data['currency'],
-            tx_ref=self.request.POST.get('tx_ref'),
-            form_data = form.cleaned_data
-            # Save form data to ChapaTransaction model
-            transaction = ChapaTransaction.objects.create(
-                first_name=form_data['first_name'],
-                last_name=form_data['last_name'],
-                username=form_data['username'],
-                email=form_data['email'],
-                tx_ref=form_data['tx_ref'],
-                amount=total_amount,
-                currency=form_data['currency'],
-                return_url=form_data['return_url']
+            # order_id = order.id
+        
+        # Get form data
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            tx_ref = request.POST.get('tx_ref')
+            amount = request.POST.get('amount')
+            currency = request.POST.get('currency')
+            return_url = request.POST.get('return_url')
+            
+            
+            # Save form data to the ChapaTransactionMixin model
+            chapa_transaction = ChapaTransaction.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                email=email,
+                tx_ref=tx_ref,
+                amount=amount,
+                currency=currency,
+                return_url=return_url
             )
-            transaction.save()
-            # redirect_url="http://127.0.0.1:8000/checkout",
-        
-        # Prepare payment data
-            payment_data = {
-                'amount': total_amount,
-                'orderId': order_id,
-                'currency':currency ,  
-                'apiKey': settings.CHAPA_API_KEY,
-                # 'redirect_url':redirect_url,
-                'redirect_url':"http://127.0.0.1:8000/checkout",
-                'tx_ref':tx_ref
-                
+
+            chapa_transaction.save()
+            # Redirect user to Chapa website URL with the necessary parameters
+            chapa_url = 'https://api.chapa.co/v1/hosted/pay'
+
+            payload = {
+                # 'public_key': settings.CHAPA_PUBLIC_KEY,  # Assuming you have stored the public key in settings
+                'public_key':settings.CHAPA_PUBLIC_KEY,
+                'first_name': first_name,
+                'last_name': last_name,
+                'username': username,
+                'email': email,
+                'tx_ref': tx_ref,
+                'amount': amount,
+                'currency': currency,
+                'return_url': return_url,
+                'cancel_url': 'https://message-link.bomerc.com/checkout'  # Assuming you have a cancel URL
             }
-        
-        # Make a request to Chapa's API to create a payment
-            chapa_response = requests.post(settings.CHAPA_PAYMENT_URL, json=payment_data)
-            payment_response = chapa_response.json()
             
-            if payment_response['success']:
-                order.ordered=True
+            # Make a POST request to Chapa website URL
+            response = requests.post(chapa_url, data=payload)
             
-                update_order_status(order_id, 'paid')  
-                return JsonResponse({'success': True, 'message': 'Payment successful'})
-            else:
-                return JsonResponse({'success': False, 'error': payment_response['error']})
+            # Redirect the user to the Chapa website
+            return redirect(response.url)
+    else:
+        return render(request, 'index.html')
 
         # try:
             # client = ChapaClient(secret_key=settings.CHAPA_SECRET, api_url=settings.CHAPA_API_URL, api_version=settings.CHAPA_API_VERSION)

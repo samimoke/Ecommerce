@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
  # Load environment variables from .env file
 load_dotenv()
-from .config import SECRET_KEY,  EMAIL_HOST_PASSWORD,EMAIL_HOST_USER,DB_NAME,DB_USER,DB_PASSWORD,DB_HOST
+from .config import SECRET_KEY,  EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, DB_NAME,DB_USER, DB_PASSWORD, DB_HOST, CHAPA_PUBLIC_KEY, CHAPA_SECRET, CHAPA_API_URL, CHAPA_WEBHOOK_URL,CHAPA_API_VERSION
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -137,10 +137,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-CHAPA_SECRET = "CHASECK_TEST-Z7xBbszBlzcfBQqrCZOKybGTCJ9C7p3w"
-CHAPA_API_URL = 'https://api.chapa.dev'
-CHAPA_WEBHOOK_URL = 'https://6ba4-196-188-115-244.eu.ngrok.io/chapa-hook'
-CHAPA_API_VERSION = 'v1'
+CHAPA_SECRET = CHAPA_SECRET  
+CHAPA_PUBLIC_KEY=CHAPA_PUBLIC_KEY
+CHAPA_API_URL = CHAPA_API_URL
+CHAPA_WEBHOOK_URL = CHAPA_WEBHOOK_URL
+CHAPA_API_VERSION = CHAPA_API_VERSION
 CHAPA_TRANSACTION_MODEL = 'eshop.ChapaTransaction'
 LOGIN_URL='login/'
 

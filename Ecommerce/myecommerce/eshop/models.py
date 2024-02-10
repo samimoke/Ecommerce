@@ -116,9 +116,9 @@ class Address(models.Model):
 class ChapaTransactionMixin(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid4)
-    # amount = models.FloatField()
-    # currency = models.CharField(max_length=25, default='ETB')
-    user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True, default='sami')
+    # # amount = models.FloatField()
+    # # currency = models.CharField(max_length=25, default='ETB')
+    # user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True, default='sami')
     time_stamp=models.DateField(auto_now_add=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

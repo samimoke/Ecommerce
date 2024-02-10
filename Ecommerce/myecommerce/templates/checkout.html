@@ -349,12 +349,13 @@
                             <hr class="mb-4">
                             <div class="title"> <span>Payment</span> </div>
                             <div class="d-block my-3">
-                                {% for value, name in form.fields.payment_method.choices %}
+                                 {% for value, name in form.fields.payment_method.choices %}
                                 <div class="custom-control custom-radio">
                                     <input id="{{name}}" name="payment_method" type="radio" value={{value}} class="custom-control-input" checked required>
                                     <label class="custom-control-label" for="{{name}}">{{name}}</label>
-                                </div>
+                                </div> 
                                 {% endfor %}
+                                
                                 {% comment %} <div class="custom-control custom-radio">
                                     <input id="paypal" name="payment_Method" type="radio" class="custom-control-input" required>
                                     <label class="custom-control-label" for="paypal">Paypal</label>

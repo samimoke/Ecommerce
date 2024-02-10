@@ -77,7 +77,9 @@
                         <div>
                           {% comment %} "{% url 'payment' %}" {% endcomment %}
                           {% comment %} <form action="{% url 'payment' %}" method="POST" > {% endcomment %}
-                          <form action="https://api.chapa.co/v1/hosted/pay" method="POST" >
+                          {% comment %} <form action="https://api.chapa.co/v1/hosted/pay" method="POST" > {% endcomment %}
+                            {% comment %} 'https://api.chapa.co/v1/hosted/pay' {% endcomment %}
+                            <form action="{% url 'payments' %}" method="POST" >
      
                             {% csrf_token %}
                             {{forms.as_p}}
