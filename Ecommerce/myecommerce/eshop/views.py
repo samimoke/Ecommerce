@@ -242,10 +242,11 @@ class Checkout(LoginRequiredMixin,View):
 
             return render(self.request,'checkout.html',context)
         except ObjectDoesNotExist:
-            messages.info(self.request,'You donot have an active order')
-            return redirect('checkout')
+            # messages.info(self.request,'You donot have an active order')
+           return redirect('checkout')
     def post(self,*args, **kwargs):
         form=CheckoutForm(self.request.POST or None)
+        order_not_exist_message_displayed = False
         try:
             order=Order.objects.get(user=self.request.user,ordered=False)
             if form.is_valid():
@@ -383,8 +384,12 @@ class Checkout(LoginRequiredMixin,View):
                 return redirect('checkout')
             else:
                 messages.warning(self.request,'Checkout Failed')
-        except ObjectDoesNotExist:    
-            messages.warning(self.request,'You donot have an active order')
+        except ObjectDoesNotExist:  
+            if not order_not_exist_message_displayed:  # Display message only once
+                # messages.warning(self.request, 'You do not have an active order')
+                order_not_exist_message_displayed = True  # Set flag to True
+  
+            # messages.warning(self.request,'You donot have an active order')
         return redirect('checkout')
 # def wishlists(request):
 #     return render(request,'wishlist.html')
@@ -494,7 +499,7 @@ def payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():   
-            # order=Order.objects.get(user=self.request.user,ordered=False)
+            order=Order.objects.get(user=request.user,ordered=False)
             # total_amount = order.get_final_price() * 100  
         
             # order_id = order.id
@@ -537,60 +542,27 @@ def payment(request):
                 'amount': amount,
                 'currency': currency,
                 'return_url': return_url,
-                'cancel_url': 'https://message-link.bomerc.com/checkout'  # Assuming you have a cancel URL
+                'cancel_url': 'http://127.0.0.1:8000'  # Assuming you have a cancel URL
             }
             
             # Make a POST request to Chapa website URL
             response = requests.post(chapa_url, data=payload)
-            
+            order_items=order.items.all()
+            order_items.update(ordered=True)
+            for item in order_items:
+                item.save() 
+
+            order.ordered=True
+            # order.payment=payment
+            order.ref_code=create_ref_code()
+            # order.coupon=coupon
+            order.save()
             # Redirect the user to the Chapa website
             return redirect(response.url)
     else:
         return render(request, 'index.html')
 
-        # try:
-            # client = ChapaClient(secret_key=settings.CHAPA_SECRET, api_url=settings.CHAPA_API_URL, api_version=settings.CHAPA_API_VERSION)
-            
-            # amount=order.get_final_price() * 100,
-            # currency="ETB",
-            # tx_ref=self.request.POST.get('tx_ref'),
-            # redirect_url="http://127.0.0.1:8000/checkout",
-            # customer={
-            #     "email": self.request.user.email,
-                
-            #     "name": self.request.user.name
-            #                     },
-            # meta={
-            #     "order_id": order.id
-            #                     }
-                                    
-            # charge = client.create_transaction(amount=amount, currency="USD", tx_ref=tx_ref,
-            #                                 redirect_url=redirect_url, customer=customer, meta=meta)
-            # payment=ChapaTransaction()
-            # payment.create_transaction_id=charge['id']   
-            # payment.user=self.request.user
-            # payment.amount=self.amount
-            # payment.currency=self.currency
-            # payment.save() 
-            # order_items=order.items.all()
-            # order_items.update(ordered=True)
-            # for item in order_items:
-            #     item.save() 
-
-            # order.ordered=True
-            # order.payment=payment
-            # order.ref_code=create_ref_code()
-            # order.save()
-            
-                
-
-            #    if charge.status ==200:
-            # messages.SUCCESS(self.request,'Your payment is successful')
-            # return redirect('/')
-            # charge = client.verify_transaction(tx_ref=self.request.POST.get('tx_ref'))
-        # except:   
-        # messages.error(self.request,'Your payment is not success')
-        # return render(self.request,'payment.html')
+       
 def get_coupon(request,code):
     try:
         coupon= Coupon.objects.get(code=code)
@@ -619,7 +591,7 @@ class Add_Coupon(LoginRequiredMixin,View):
                     return redirect('checkout')
         return redirect('checkout') 
 def create_ref_code():
-    return ''.join(random.choices(string.ascii_lower+string.digits,k=20))
+    return ''.join(random.choices(string.ascii_lowercase+string.digits,k=20))
 class Refund_Requests(View):
     def get(self,*args, **kwargs):
         form=RefundForm()

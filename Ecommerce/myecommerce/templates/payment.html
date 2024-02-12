@@ -97,7 +97,7 @@
                         </div>
                             <br> 
                                     <div>
-                            <input  style="text-align:center"  class="form-control " name="username"  placeholder="username" />
+                            <input  style="text-align:center"  class="form-control "name="username" type="hidden" value="{{request.user.username}}"  placeholder="username" />
                         </div>
                             <br> 
                                     <div>
@@ -128,12 +128,12 @@
                             <br>
                             
                             <div>
-                            <input  style="text-align:center" class="form-control "  type="hidden" name="return_url" value="http://127.0.0.1:8000/checkout">
+                            <input  style="text-align:center" class="form-control "  type="hidden" name="return_url" value="http://127.0.0.1:8000">
                             </div>
                             <br>
                             
 
-                            <input  style="text-align:center"  class="form-control " type="hidden" name="cancel_url" value="https://message-link.bomerc.com/checkout">
+                            <input  style="text-align:center"  class="form-control " type="hidden" name="cancel_url" value="http://1278.0.0.1/order_summery">
                             
                         
                             <input  style="text-align:center"  class=" btn btn-primary float-right" type="submit" value="Pay Now">

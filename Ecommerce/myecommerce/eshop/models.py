@@ -41,7 +41,8 @@ class Item(models.Model):
      
      def get_remove_from_cart_url(self):
          return reverse("remove_from_cart", args=[self.slug])
-
+     def get_remove_from_wishlist_url(self):
+         return reverse("remove_from_wishlist", args=[self.slug])
 
 class OrderItem(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
@@ -72,7 +73,7 @@ class Order(models.Model):
     ordered=models.BooleanField(default=False)
     billing_address=models.ForeignKey('Address',related_name='billing_address' ,on_delete=models.SET_NULL,null=True,blank=True)
     shipping_address=models.ForeignKey('Address',related_name='shipping_address',on_delete=models.SET_NULL,null=True,blank=True)
-    payment=models.ForeignKey('ChapaTransaction',on_delete=models.SET_NULL,null=True,blank=True)
+    payment=models.ForeignKey('ChapaTransaction',related_name='payment',on_delete=models.SET_NULL,null=True,blank=True)
     coupon=models.ForeignKey('Coupon',on_delete=models.SET_NULL,null=True,blank=True)
     being_delivered=models.BooleanField(default=False)
     received=models.BooleanField(default=False)
@@ -148,14 +149,6 @@ class ChapaTransactionMixin(models.Model):
 
 class ChapaTransaction(ChapaTransactionMixin):
     pass
-    # first_name = models.CharField(max_length=100)
-    # last_name = models.CharField(max_length=100)
-    # username = models.CharField(max_length=100)
-    # email = models.EmailField()
-    # tx_ref = models.CharField(max_length=100)
-    # amount = models.DecimalField(max_digits=10, decimal_places=2)
-    # currency = models.CharField(max_length=10,default='ETB')
-    # return_url = models.URLField()
     
 class Coupon(models.Model):
     code=models.CharField(max_length=15)
