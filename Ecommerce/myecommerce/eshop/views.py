@@ -495,6 +495,34 @@ class Payment(LoginRequiredMixin,View):
             return redirect('checkout')
    
 # def payment(request,self,*args, **kwargs):
+               
+def get_coupon(request,code):
+    try:
+        coupon= Coupon.objects.get(code=code)
+        return coupon
+    except ObjectDoesNotExist:
+        messages.info(request,'Coupon doesnot exist')
+        return redirect('checkout')
+
+class Add_Coupon(LoginRequiredMixin,View):
+    login_url='login'
+    def post(self, *args, **kwargs):
+        form=CouponForm(self.request.POST or None)
+        if self.request.method=="POST":
+            if form.is_valid():
+                code=form.cleaned_data.get('code')
+                try:
+                    order=Order.objects.get(user=self.request.user,ordered=False)
+                    
+                    order.coupon=get_coupon(self.request,code)
+                    order.save()
+                    messages.success(self.request,'Successfully Coupon is added')
+                    return redirect('checkout')
+
+                except ObjectDoesNotExist:
+                    messages.info(self.request,'You donot have coupon')
+                    return redirect('checkout')
+        return redirect('checkout') 
 def payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -554,8 +582,14 @@ def payment(request):
 
             order.ordered=True
             # order.payment=payment
+            order.payment = chapa_transaction
             order.ref_code=create_ref_code()
             # order.coupon=coupon
+            coupon_code = request.POST.get('coupon_code')
+            if coupon_code:
+                coupon = get_coupon(request, coupon_code)
+                if coupon:
+                    order.coupon = coupon
             order.save()
             # Redirect the user to the Chapa website
             return redirect(response.url)
@@ -563,33 +597,33 @@ def payment(request):
         return render(request, 'index.html')
 
        
-def get_coupon(request,code):
-    try:
-        coupon= Coupon.objects.get(code=code)
-        return coupon
-    except ObjectDoesNotExist:
-        messages.info(request,'Coupon doesnot exist')
-        return redirect('checkout')
+# def get_coupon(request,code):
+#     try:
+#         coupon= Coupon.objects.get(code=code)
+#         return coupon
+#     except ObjectDoesNotExist:
+#         messages.info(request,'Coupon doesnot exist')
+#         return redirect('checkout')
 
-class Add_Coupon(LoginRequiredMixin,View):
-    login_url='login'
-    def post(self, *args, **kwargs):
-        form=CouponForm(self.request.POST or None)
-        if self.request.method=="POST":
-            if form.is_valid():
-                code=form.cleaned_data.get('code')
-                try:
-                    order=Order.objects.get(user=self.request.user,ordered=False)
+# class Add_Coupon(LoginRequiredMixin,View):
+#     login_url='login'
+#     def post(self, *args, **kwargs):
+#         form=CouponForm(self.request.POST or None)
+#         if self.request.method=="POST":
+#             if form.is_valid():
+#                 code=form.cleaned_data.get('code')
+#                 try:
+#                     order=Order.objects.get(user=self.request.user,ordered=False)
                     
-                    order.coupon=get_coupon(self.request,code)
-                    order.save()
-                    messages.success(self.request,'Successfully Coupon is added')
-                    return redirect('checkout')
+#                     order.coupon=get_coupon(self.request,code)
+#                     order.save()
+#                     messages.success(self.request,'Successfully Coupon is added')
+#                     return redirect('checkout')
 
-                except ObjectDoesNotExist:
-                    messages.info(self.request,'You donot have coupon')
-                    return redirect('checkout')
-        return redirect('checkout') 
+#                 except ObjectDoesNotExist:
+#                     messages.info(self.request,'You donot have coupon')
+#                     return redirect('checkout')
+#         return redirect('checkout') 
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase+string.digits,k=20))
 class Refund_Requests(View):
