@@ -68,7 +68,7 @@
                                  {% for item in items %} 
 								<li><a href="{% url 'product_detail' item.slug %}">Shop Detail</a></li
                                     {% endfor %}>
-								<li><a href="cart.html">Cart</a></li>
+								<li><a href="{% url 'order_summery' %}">Cart</a></li>
 								<li><a href="{% url 'checkout' %}">Checkout</a></li>
 								<li><a href="{% url 'my_account' %}">My Account</a></li>
                                 {% for item in items %}
@@ -129,7 +129,7 @@
                             <p>1x - <span class="price">$40.00</span></p>
                         </li>
                         <li class="total">
-                            <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                            <a href="{% url 'order_summery' %}" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
                             <span class="float-right"><strong>Total</strong>: $180.00</span>
                         </li>
                     </ul>

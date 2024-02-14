@@ -68,7 +68,7 @@
                                  {% for item in items %} 
 								<li><a href="s{% url 'product_detail' item.slug %}">Shop Detail</a></li>
                                 {% endfor %}
-                                <li><a href="cart.html">Cart</a></li>
+                                <li><a href="{% url 'order_summery' %}">Cart</a></li>
                                 <li><a href="{%  url 'checkout' %}">Checkout</a></li>
                                 <li><a href="{% url 'my_account' %}">My Account</a></li>
                                 {% for item in items %}
@@ -132,7 +132,7 @@
                             <p>1x - <span class="price">$40.00</span></p>
                         </li>
                         <li class="total">
-                            <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                            <a href="{% url 'order_summery' %}" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
                             <span class="float-right"><strong>Total</strong>: $180.00</span>
                         </li>
                     </ul>
@@ -327,9 +327,10 @@
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                      {% for item in items %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                            {% endfor %}
+                                            
                                            </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">
@@ -348,9 +349,10 @@
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                         {% for item in items %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                            {% endfor %}
+                                           
                                           </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                         {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">
@@ -369,9 +371,10 @@
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                           {% for item in items %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                            {% endfor %}
+                                            
                                          </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">
@@ -390,9 +393,10 @@
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                            {% for item in items %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                            {% endfor %}
+                                           
                                          </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                         {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">
@@ -409,11 +413,12 @@
                                         <ul>
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
-                                            {% for item in items %}
+                                            {% for item in object_list %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                            {% endfor %}
+                                            
                                          </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">
@@ -432,9 +437,10 @@
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                           {% for item in items %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                            {% endfor %}
+                                            
                                            </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">
@@ -453,9 +459,10 @@
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                               {% for item in items %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                            {% endfor %}
+                                           
                                         </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                         {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">
@@ -474,9 +481,10 @@
                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                              {% for item in items %}
                                             <li><a href="{% url 'add_to_wishlist' item.slug %}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="fas fa-sync-alt"></i></a></li>
-                                            {% endfor %}
+                                            
                                         </ul>
-                                        <a class="cart" href="#">Add to Cart</a>
+                                        <a class="cart" href="{% url 'add_to_cart' item.slug %}">Add to Cart</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="why-text">

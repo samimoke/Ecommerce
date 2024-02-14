@@ -73,7 +73,7 @@
                                  {% for item in items %} 
 								<li><a href="{% url 'product_detail' item.slug  %}">Shop Detail</a></li>
                                 {% endfor %}
-                                <li><a href="">Cart</a></li>
+                                <li><a href="{% url 'order_summery' %}">Cart</a></li>
                                 <li><a href="{% url 'checkout' %}">Checkout</a></li>
                                 <li><a href="{% url 'my_account' %}">My Account</a></li>
                                  {% for item in items %}
@@ -143,7 +143,7 @@
                             <p>1x - <span class="price">$40.00</span></p>
                         </li>
                         <li class="total">
-                            <a href="#" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                            <a href="{% url 'order_summery' %}" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
                             <span class="float-right"><strong>Total</strong>: $180.00</span>
                         </li>
                     </ul>
@@ -187,7 +187,19 @@
     <div class="about-box-main">
         <div class="table-responsive text-nowrap">
         <div class="container">
-            
+        <div class="col-xl-7 col-lg-7 col-md-6">
+                      <div>
+                    {% if messages %}
+                    {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                  <strong> {{ message }} </strong>
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>     
 		<h2>Order Summery </h2>		
     <table class="table caption-top">
   

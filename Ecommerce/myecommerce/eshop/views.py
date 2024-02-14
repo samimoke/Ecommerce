@@ -53,7 +53,7 @@ class ProductDetailView(DetailView):
 class Home(ListView):
     model=Item
     template_name='index.html'
-@login_required
+@login_required(login_url='login')
 def add_to_cart(request,slug):
     item=get_object_or_404(Item,slug=slug)
     order_item,created=OrderItem.objects.get_or_create(item=item,user=request.user,ordered=False)
@@ -91,7 +91,7 @@ def remove_from_cart(request,slug):
           messages.info(request,'This item  is not found in your cart')
           return redirect('product',slug=slug)
      else:
-       messages.info(request,'You do not have an active cart')
+       messages.warning(request,'You do not have an active cart')
        return redirect('product',slug=slug)
        
     #  return redirect('product',slug=slug)
@@ -118,7 +118,7 @@ def remove_single_item_from_cart(request,slug):
           messages.info(request,'This item  is not found in your cart')
           return redirect('order_summery')
      else:
-       messages.info(request,'You do not have an active cart')
+       messages.warning(request,'You do not have an active cart')
        return redirect('order_summery') 
 
 from django.contrib.auth.models import Group
@@ -179,7 +179,7 @@ def logins(request):
            except:
             # print('Username does not exist!')
             
-               messages.error(request, " username does not exist")
+               messages.warning(request, " username does not exist")
                return render(request,"login.html")
 
            authenticate(request,username=username,password=password)
@@ -242,8 +242,8 @@ class Checkout(LoginRequiredMixin,View):
 
             return render(self.request,'checkout.html',context)
         except ObjectDoesNotExist:
-            # messages.info(self.request,'You donot have an active order')
-           return redirect('checkout')
+          messages.warning(self.request,'You donot have an active order')
+        return redirect('home')
     def post(self,*args, **kwargs):
         form=CheckoutForm(self.request.POST or None)
         order_not_exist_message_displayed = False
@@ -252,7 +252,7 @@ class Checkout(LoginRequiredMixin,View):
             if form.is_valid():
                 use_default_shipping=form.cleaned_data.get('use_default_shipping')
                 if use_default_shipping:
-                    print("Use this default shipping")
+                    # print("Use this default shipping")
                     address_qs=Address.objects.filter(
                     user=self.request.user,
                     address_type='S',
@@ -264,10 +264,10 @@ class Checkout(LoginRequiredMixin,View):
                         order.shipping_address=shipping_address
                         order.save()
                     else:
-                        print('You do not have default shipping address')
+                        messages.warning('You do not have default shipping address')
                         return redirect('checkout')
                 else:
-                    print('User enter new shipping address')
+                    messages.info('User enter new shipping address')
 
                     first_name=form.cleaned_data.get('first_name')
                     last_name=form.cleaned_data.get('last_name')
@@ -319,7 +319,7 @@ class Checkout(LoginRequiredMixin,View):
                     order.save()
 
                 elif use_default_billing:
-                    print("Use this default billing")
+                    messages.info("Use this default billing")
                     address_qs=Address.objects.filter(
                     user=self.request.user,
                     address_type='B',
@@ -334,7 +334,7 @@ class Checkout(LoginRequiredMixin,View):
                         messages.info(self.request,'You do not have default billing address')
                         return redirect('checkout')
                 else:
-                    print('User enter new billing address')
+                    # messages.info('User enter new billing address')
 
                     first_name=form.cleaned_data.get('first_name')
                     last_name=form.cleaned_data.get('last_name')
@@ -389,10 +389,11 @@ class Checkout(LoginRequiredMixin,View):
                 # messages.warning(self.request, 'You do not have an active order')
                 order_not_exist_message_displayed = True  # Set flag to True
   
-            # messages.warning(self.request,'You donot have an active order')
-        return redirect('checkout')
+                messages.ERROR(self.request,'You donot have an active order')
+            return redirect('checkout')
 # def wishlists(request):
 #     return render(request,'wishlist.html')
+@login_required(login_url='login')
 def myaccount(request):
     return render(request,'my-account.html')
 def gallery(request):
@@ -465,8 +466,8 @@ class OrderSummeryView(LoginRequiredMixin,View):
            }
            return render(self.request,'order_summary.html',context)
         except ObjectDoesNotExist:
-            messages.error(self.request,'You donot have an active order')
-            return redirect('/')
+            messages.warning(self.request,'You donot have an active order')
+            return redirect('home')
     
 
         return render (self.request, 'order_summary.html')
@@ -523,6 +524,7 @@ class Add_Coupon(LoginRequiredMixin,View):
                     messages.info(self.request,'You donot have coupon')
                     return redirect('checkout')
         return redirect('checkout') 
+@login_required(login_url='login')
 def payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -626,7 +628,8 @@ def payment(request):
 #         return redirect('checkout') 
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase+string.digits,k=20))
-class Refund_Requests(View):
+class Refund_Requests(LoginRequiredMixin,View):
+    login_url='login'
     def get(self,*args, **kwargs):
         form=RefundForm()
         context={
@@ -666,8 +669,9 @@ def subscribe(request):
 
 def subscribe_success(request):
     return render(request, 'subscribe_succuss.html')
-@login_required
+
 # @require_POST
+@login_required(login_url='login')
 def add_to_wishlist(request, slug):
      product=get_object_or_404(Item,slug=slug)
      if request.method == 'POST':

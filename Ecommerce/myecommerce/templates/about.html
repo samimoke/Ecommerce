@@ -68,7 +68,7 @@
                                  {% for item in items %} 
 								<li><a href="{% url 'product_detail' item.slug %}">Shop Detail</a></li>
                                 {% endfor %}
-                                <li><a href="">Cart</a></li>
+                                <li><a href="{% url 'order_summery' %}">Cart</a></li>
                                 <li><a href="{% url 'checkout' %}">Checkout</a></li>
                                 <li><a href="{% url 'my_account' %}">My Account</a></li>
                             {% for item in items %}

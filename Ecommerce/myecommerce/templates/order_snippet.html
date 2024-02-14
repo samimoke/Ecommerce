@@ -3,6 +3,19 @@
         {% comment %} <div class="title-left">  {% endcomment %}
             {% comment %} <h3>Shopping cart</h3> {% endcomment %}
         {% comment %} </div> {% endcomment %}
+         <div class="col-xl-7 col-lg-7 col-md-6">
+                      <div>
+                    {% if messages %}
+                    {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                  <strong> {{ message }} </strong>
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
         
         <div class="rounded p-2 bg-light">
             <div class="media mb-2 border-bottom">
