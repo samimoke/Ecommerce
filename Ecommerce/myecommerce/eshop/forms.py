@@ -43,10 +43,10 @@ class ContactForm(forms.ModelForm):
         model=Contactus
         fields=['name','email','subject','message']
 class CheckoutForm(forms.Form):
-    first_name=forms.CharField(required=False)
-    last_name=forms.CharField(required=False)
-    username=forms.CharField(required=False)
-    email=forms.EmailField(required=False)
+    first_name=forms.CharField(widget=forms.HiddenInput)
+    last_name=forms.CharField(widget=forms.HiddenInput)
+    username=forms.CharField(widget=forms.HiddenInput)
+    email=forms.EmailField(widget=forms.HiddenInput)
     shipping_address1=forms.CharField(required=False)
     shipping_address2=forms.CharField(required=False)
     shipping_country=CountryField(blank_label='(select country)').formfield(required=False,widget=CountrySelectWidget(attrs={'class':'wide w-100'}))
@@ -55,10 +55,10 @@ class CheckoutForm(forms.Form):
     same_billing_address=forms.BooleanField(required=False)
     
     
-    first_name=forms.CharField(required=False)
-    last_name=forms.CharField(required=False)
-    username=forms.CharField(required=False)
-    email=forms.EmailField(required=False)
+    first_name=forms.CharField(widget=forms.HiddenInput)
+    last_name=forms.CharField(widget=forms.HiddenInput)
+    username=forms.CharField(widget=forms.HiddenInput)
+    email=forms.EmailField(widget=forms.HiddenInput)
     billing_address1=forms.CharField(required=False)
     billing_address2=forms.CharField(required=False)
     billing_country=CountryField(blank_label='(select country)').formfield(required=False,widget=CountrySelectWidget(attrs={'class':'wide w-100'}))

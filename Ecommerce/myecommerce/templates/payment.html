@@ -86,14 +86,15 @@
                             <div class="row">
                             <div class="col-md-6 mb-3">
                             {% comment %} <div class="col-lg-6 md-3 col-md-12 " > {% endcomment %}
-                            <input class="form-control "  type="hidden" name="public_key" value="CHAPUBK_TEST-yIzWvH4CP8qDie6ZfHUYMrwuoitaIDpM" />
+                            <input class="form-control "  type="hidden" name="public_key" value="{{settings.PUBLIC_KEY}}"" />
+                            {% comment %} CHAPUBK_TEST-yIzWvH4CP8qDie6ZfHUYMrwuoitaIDpM {% endcomment %}
                             <div>
                             <div>
-                            <input style="text-align:center"  class="form-control "  name="first_name"  placeholder="firt_name" />
+                            <input style="text-align:center"  class="form-control "  name="first_name"  placeholder="firt_name"value="{{request.user.first_name}}" />
                             </div>
                             <br>
                             <div>
-                            <input  style="text-align:center" class="form-control " name="last_name"  placeholder="last_name" />
+                            <input  style="text-align:center" class="form-control " name="last_name"  placeholder="last_name" value="{{request.user.last_name}}" />
                         </div>
                             <br> 
                                     <div>
@@ -101,7 +102,7 @@
                         </div>
                             <br> 
                                     <div>
-                            <input  style="text-align:center" class="form-control " name="email"  placeholder="email" />
+                            <input  style="text-align:center" class="form-control " name="email"  placeholder="email" value="{{request.user.email}}"/>
                         </div>
                         </div>
                         </div>
