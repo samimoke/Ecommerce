@@ -34,7 +34,7 @@ Django==4.1.4
 django-allauth==0.54.0
 django-appconf==1.0.6
 django-bootstrap5==22.2
-django-chapa==1.0.4
+django-chapa>=1.0.4
 django-chartjs==2.3.0
 django-ckeditor==6.5.1
 django-cors-headers==4.0.0
