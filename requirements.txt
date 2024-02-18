@@ -168,5 +168,5 @@ Werkzeug==2.2.3
 whitenoise==6.5.0
 wrapt==1.14.1
 wsproto==1.2.0
-xhtml2pdf==0.2.11
+# xhtml2pdf==0.2.11
 yarg==0.1.9
