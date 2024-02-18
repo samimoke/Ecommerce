@@ -100,7 +100,7 @@ platformdirs==3.0.0
 plotly==5.14.1
 protobuf==4.22.3
 psycopg2==2.9.9
-pyairmore==0.2.1a1
+# pyairmore==0.2.1a1
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
 pycparser==2.21
