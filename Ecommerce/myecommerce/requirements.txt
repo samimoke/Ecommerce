@@ -82,7 +82,7 @@ MarkupSafe==2.1.2
 matplotlib==3.7.0
 mip==1.15.0
 ml-dtypes==0.1.0
-mongoengine==0.27.0
+# mongoengine==0.27.0
 numpy==1.26.0
 oauthlib==3.2.2
 opencv-python==4.8.1.78
