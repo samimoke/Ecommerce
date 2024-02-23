@@ -45,8 +45,13 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['http://127.0.0.1:8000']
+# SECURE_SSL_REDIRECT = True
 
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+
+# ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 
@@ -61,6 +66,7 @@ INSTALLED_APPS = [
     'eshop',
     'django_countries',
     'django_chapa',
+    'sslserver',
 
 ]
 
